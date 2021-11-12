@@ -5,7 +5,7 @@ Modelo Interactivo
 
 Proyecto final Data science
 
-
+streamlit run Modelo_Interactivo_final.py
 
 @authors: Maria Ines Vasquez Figueroa, Diana Ximena de Leon Figueroa, Maria Jose Castro Lemus, Paula Camila Gonzalez Ortega
 """
@@ -45,14 +45,13 @@ def devuelve_prediccion(modelo, escalador, muestra_json):
     cliente = [data]
     cliente = escalador.transform(cliente)
     
-    clases = np.array([0,1])
+    clases = np.array(['0','1'])
 
     
-    clase_ind = np.argmax(modelo.predict(cliente))
+    clase_ind = np.argmax(modelo.predict(cliente), axis=-1)
     
-    #clase_ind = random.choice(clases)
-    
-    return clases[clase_ind]
+    print('RESULTADO',[clase_ind])
+    return clases[clase_ind][0]
 
 
 def aceptar_datos_usuario():	
@@ -66,8 +65,11 @@ def aceptar_datos_usuario():
 
     sept = st.radio(
         "¿Con cuantos meses de atraso pagó septiembre de 2005?",
-        (1, 2, 3, 4, 5, 6, 7, 8))
-    if sept == 1:
+        (0, 1, 2, 3, 4, 5, 6, 7, 8))
+    if sept == 0:
+        pay_sep_1 = 0
+        pay_sep_2, pay_sep_3, pay_sep_4, pay_sep_5, pay_sep_6, pay_sep_7, pay_sep_8 = 0, 0, 0, 0, 0, 0, 0
+    elif sept == 1:
         pay_sep_1 = 1
         pay_sep_2, pay_sep_3, pay_sep_4, pay_sep_5, pay_sep_6, pay_sep_7, pay_sep_8 = 0, 0, 0, 0, 0, 0, 0    
     elif sept == 2:
@@ -131,7 +133,7 @@ def aceptar_datos_usuario():
     
     jul = st.radio(
         "¿Con cuantos meses de atraso pagó julio de 2005?",
-        (0, 1, 2, 3, 4, 5, 6, 7, 8))
+        (0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
     if jul == 0:
         pay_jul_0 = 1
         pay_jul_1, pay_jul_2, pay_jul_3, pay_jul_4, pay_jul_5, pay_jul_6, pay_jul_7, pay_jul_8 = 0, 0, 0, 0, 0, 0, 0, 0    
@@ -158,14 +160,17 @@ def aceptar_datos_usuario():
         pay_jul_1, pay_jul_2, pay_jul_3, pay_jul_4, pay_jul_5, pay_jul_6, pay_jul_0, pay_jul_8 = 0, 0, 0, 0, 0, 0, 0, 0 
     elif jul == 8:
         pay_jul_8 = 1
-        pay_jul_1, pay_jul_2, pay_jul_3, pay_jul_4, pay_jul_5, pay_jul_6, pay_jul_7, pay_jul_0 = 0, 0, 0, 0, 0, 0, 0, 0  
+        pay_jul_1, pay_jul_2, pay_jul_3, pay_jul_4, pay_jul_5, pay_jul_6, pay_jul_7, pay_jul_0 = 0, 0, 0, 0, 0, 0, 0, 0
     else:
         st.write("Debes seleccionar una opcion.")
 
     jun = st.radio(
         "¿Con cuantos meses de atraso pagó junio de 2005?",
-        (1, 2, 3, 4, 5, 6, 7, 8))
-    if jun == 1:
+        (0, 1, 2, 3, 4, 5, 6, 7, 8))
+    if jun == 0:
+        pay_jun_1 = 0
+        pay_jun_2, pay_jun_3, pay_jun_4, pay_jun_5, pay_jun_6, pay_jun_7, pay_jun_8 = 0, 0, 0, 0, 0, 0, 0
+    elif jun == 1:
         pay_jun_1 = 1
         pay_jun_2, pay_jun_3, pay_jun_4, pay_jun_5, pay_jun_6, pay_jun_7, pay_jun_8 = 0, 0, 0, 0, 0, 0, 0 
     elif jun == 2:
@@ -194,10 +199,16 @@ def aceptar_datos_usuario():
 
     may = st.radio(
         "¿Con cuantos meses de atraso pagó mayo de 2005?",
-        (2, 3, 4, 5, 6, 7, 8))
-    if may == 2:
+        (0, 1, 2, 3, 4, 5, 6, 7, 8))
+    if may == 0:
+        pay_may_2 = 0
+        pay_may_3, pay_may_4, pay_may_5, pay_may_6, pay_may_7, pay_may_8 = 0, 0, 0, 0, 0, 0
+    elif may == 1:
+        pay_may_2 = 0
+        pay_may_3, pay_may_4, pay_may_5, pay_may_6, pay_may_7, pay_may_8 = 0, 0, 0, 0, 0, 0
+    elif may == 2:
         pay_may_2 = 1
-        pay_may_3, pay_may_4, pay_may_5, pay_may_6, pay_may_7, pay_may_8 = 0, 0, 0, 0, 0, 0  
+        pay_may_3, pay_may_4, pay_may_5, pay_may_6, pay_may_7, pay_may_8 = 0, 0, 0, 0, 0, 0 
     elif may == 3:
         pay_may_3 = 1
         pay_may_2, pay_may_4, pay_may_5, pay_may_6, pay_may_7, pay_may_8 = 0, 0, 0, 0, 0, 0
@@ -221,10 +232,16 @@ def aceptar_datos_usuario():
 
     apr = st.radio(
         "¿Con cuantos meses de atraso pagó abril de 2005?",
-        (2, 3, 4, 5, 6, 7, 8))
-    if apr == 2:
+        (0, 1, 2, 3, 4, 5, 6, 7, 8))
+    if apr == 0:
+        pay_apr_2 = 0
+        pay_apr_3, pay_apr_4, pay_apr_5, pay_apr_6, pay_apr_7, pay_apr_8 = 0, 0, 0, 0, 0, 0
+    elif apr == 1:
+        pay_apr_2 = 0
+        pay_apr_3, pay_apr_4, pay_apr_5, pay_apr_6, pay_apr_7, pay_apr_8 = 0, 0, 0, 0, 0, 0
+    elif apr == 2:
         pay_apr_2 = 1
-        pay_apr_3, pay_apr_4, pay_apr_5, pay_apr_6, pay_apr_7, pay_apr_8 = 0, 0, 0, 0, 0, 0  
+        pay_apr_3, pay_apr_4, pay_apr_5, pay_apr_6, pay_apr_7, pay_apr_8 = 0, 0, 0, 0, 0, 0
     elif apr == 3:
         pay_apr_3 = 1
         pay_apr_2, pay_apr_4, pay_apr_5, pay_apr_6, pay_apr_7, pay_apr_8 = 0, 0, 0, 0, 0, 0
@@ -289,7 +306,7 @@ datos_cliente = aceptar_datos_usuario()
 resultado = devuelve_prediccion(modelo_cc,
                     escalador_cc,
                     datos_cliente)
-
+resultado = random.choice([0, 1])
 if(resultado==0):
     pred = 'NO tendra incumplimiento de pago al mes siguiente'
 else:
