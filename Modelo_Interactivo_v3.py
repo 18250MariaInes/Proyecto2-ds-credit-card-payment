@@ -1,11 +1,11 @@
 # https://streamlit.io/
 # https://docs.streamlit.io/library/api-reference/widgets/st.radio
 """
-Modelo Interactivo
+Modelo Interactivo - Proyecto 2
 
 Proyecto final Data science
 
-streamlit run Modelo_Interactivo_v3.py
+Para ejecutarlo correr:  streamlit run Modelo_Interactivo_v3.py
 
 @authors: Maria Ines Vasquez Figueroa, Diana Ximena de Leon Figueroa, Maria Jose Castro Lemus, Paula Camila Gonzalez Ortega
 """
@@ -20,12 +20,13 @@ import streamlit as st
 from tensorflow.keras.models import load_model
 import joblib
 
+#se carga el modelo y escalador
 modelo_cc = joblib.load("modelo_v3.h5")
 escalador_cc = joblib.load("escalador_v3.pkl")
 
 
 def devuelve_prediccion(modelo, escalador, muestra_json):
-    
+    #se predice impago o no usando el modelo, escalador y datos ingresados
     
     cliente = [list(muestra_json.values())]
     
@@ -33,7 +34,6 @@ def devuelve_prediccion(modelo, escalador, muestra_json):
     
     clases = np.array([0, 1])
     
-    #clase_ind = np.argmax(modelo.predict(cliente), axis=-1)
     clase_ind = modelo.predict(cliente)
     print(modelo.predict(cliente))
     return [clase_ind][0]
@@ -42,27 +42,13 @@ def devuelve_prediccion(modelo, escalador, muestra_json):
 def form_user_data():	
 
     #se piden los datos necesarios para predecir
-    percentage_paid = st.number_input("percentage paid: ")
-    avg_bill_cl = st.number_input("average bill: ")
-    avg_pay_cl = st.number_input("average pay: ")
-    num_delays = st.number_input("Dias de atraso: ")
     st.write(" ")
-    bill_change_sep = st.number_input("bill change septiembre: ")
-    bill_change_ago = st.number_input("bill change agosto: ")
-    bill_change_jul = st.number_input("bill change julio: ")
-    bill_change_jun = st.number_input("bill change junio: ")
-    bill_change_may = st.number_input("bill change mayo: ")
+    original_title = "<p style='color:palevioletred; font-size: 15px; font-weight:bold'>Datos personales</p>"
+    st.markdown(original_title, unsafe_allow_html=True)
     st.write(" ")
-    pay_change_sep = st.number_input("pay change septiembre: ")
-    pay_change_ago = st.number_input("pay change agosto: ")
-    pay_change_jul = st.number_input("pay change julio: ")
-    pay_change_jun = st.number_input("pay change junio: ")
-    pay_change_may = st.number_input("pay change mayo: ")
+    limit_bal = st.number_input("Limite Crediticio")
+
     st.write(" ")
-    cur_delay = st.number_input("atraso actual: ")
-    #original_title = "<p style='color:Blue; font-size: 15px; font-weight:bold'>Selecciona los datos segun los pagos realizados</p>"
-    st.write(" ")
-    #st.markdown(original_title, unsafe_allow_html=True)
     sex = st.radio(
         "Sexo",
         (['Femenino', 'Masculino']))
@@ -71,20 +57,7 @@ def form_user_data():
     else:
         sex_male = 1
     st.write(" ")
-
-    marriage = st.radio(
-        "Estado Civil",
-        (['Casad@', 'Solter@', 'Otro']))
-    if marriage == 'Casad@':
-        marriage_others = 0
-        marriage_single = 0
-    elif marriage == 'Solter@':
-        marriage_others = 0
-        marriage_single = 1
-    else:
-        marriage_others = 1
-        marriage_single = 0
-    st.write(" ")
+    
     education = st.radio(
         "Educacion",
         (['Media', 'Superior', 'Otra', 'Desconocida']))
@@ -109,34 +82,49 @@ def form_user_data():
         education_undergraduate = 0
         education_unknown = 1
     st.write(" ")
-    Edad = st.radio(
+    
+    marriage = st.radio(
+        "Estado Civil",
+        (['Casad@', 'Solter@', 'Otro']))
+    if marriage == 'Casad@':
+        marriage_others = 0
+        marriage_single = 0
+    elif marriage == 'Solter@':
+        marriage_others = 0
+        marriage_single = 1
+    else:
+        marriage_others = 1
+        marriage_single = 0
+    st.write(" ")
+
+    age = st.radio(
         "Selecciona el rango de tu edad",
         (['20-30','30-40', '40-50', '50-60', '60-70']))
-    if education == '20-30':
+    if age == '20-30':
         age_30_40 = 0
         age_40_50 = 0
         age_50_60 = 0
         age_60_70 = 0
         age_70_death = 0
-    elif education == '30-40':
+    elif age == '30-40':
         age_30_40 = 1
         age_40_50 = 0
         age_50_60 = 0
         age_60_70 = 0
         age_70_death = 0
-    elif education == '40-50':
+    elif age == '40-50':
         age_30_40 = 0
         age_40_50 = 1
         age_50_60 = 0
         age_60_70 = 0
         age_70_death = 0
-    elif education == '50-60':
+    elif age == '50-60':
         age_30_40 = 0
         age_40_50 = 0
         age_50_60 = 1
         age_60_70 = 0
         age_70_death = 0
-    elif education == '60-70':
+    elif age == '60-70':
         age_30_40 = 0
         age_40_50 = 0
         age_50_60 = 0
@@ -148,28 +136,85 @@ def form_user_data():
         age_50_60 = 0
         age_60_70 = 0
         age_70_death = 1
+    st.write(" ")
+
+
+    original_title = "<p style='color:lime; font-size: 15px; font-weight:bold'>Ingresa los meses atrasados</p>"
+    st.markdown(original_title, unsafe_allow_html=True)
+    st.write(" ")
+    pay_0 = st.number_input("Cantidad de meses atrasado en septiembre: ")
+    pay_2 = st.number_input("Cantidad de meses atrasado en agosto: ")
+    pay_3 = st.number_input("Cantidad de meses atrasado en julio: ")
+    pay_4 = st.number_input("Cantidad de meses atrasado en junio: ")
+    pay_5 = st.number_input("Cantidad de meses atrasado en mayo: ")
+    pay_6 = st.number_input("Cantidad de meses atrasado en abril: ")
+    total_pay = pay_0 + pay_2 + pay_3 + pay_4 + pay_5 + pay_6
     
     st.write(" ")
-    #st.markdown(original_title, unsafe_allow_html=True)
-    limit_bal = st.radio(
-        "Selecciona el rango de tu balance limite",
-        (['80000.0-200000.0', '9999.999-80000.0']))
-    if limit_bal == '80000.0-200000.0':
-        limit_bal_80000 = 1
-        limit_bal_9999 = 0
+    original_title = "<p style='color:turquoise; font-size: 15px; font-weight:bold'>Ingresa los montos de factura</p>"
+    st.markdown(original_title, unsafe_allow_html=True)
+    bill_amt_1 = st.number_input("Monto de la factura en septiembre: ")
+    bill_amt_2 = st.number_input("Monto de la factura en agosto: ")
+    bill_amt_3 = st.number_input("Monto de la factura en julio: ")
+    bill_amt_4 = st.number_input("Monto de la factura en junio: ")
+    bill_amt_5 = st.number_input("Monto de la factura en mayo: ")
+    bill_amt_6 = st.number_input("Monto de la factura en abril: ")
+    total_bill_amt = bill_amt_1 + bill_amt_2 + bill_amt_3 + bill_amt_4 + bill_amt_5 + bill_amt_6
+    
+    st.write(" ")
+    original_title = "<p style='color:palevioletred; font-size: 15px; font-weight:bold'>Ingresa los montos de pagos anteriores</p>"
+    st.markdown(original_title, unsafe_allow_html=True)
+    pay_amt_1 = st.number_input("Monto del pago anterior en septiembre: ")
+    pay_amt_2 = st.number_input("Monto del pago anterior en agosto: ")
+    pay_amt_3 = st.number_input("Monto del pago anterior en julio: ")
+    pay_amt_4 = st.number_input("Monto del pago anterior en junio: ")
+    pay_amt_5 = st.number_input("Monto del pago anterior en mayo: ")
+    pay_amt_6 = st.number_input("Monto del pago anterior en abril: ")
+    total_pay_amt = pay_amt_1 + pay_amt_2 + pay_amt_3 + pay_amt_4 + pay_amt_5 + pay_amt_6
+
+    ## comienzan los calculos internos para pasarselos como datos del cliente para el modelo
+    percentage_paid = float(total_pay_amt / total_bill_amt)
+    avg_bill_cl = float(total_bill_amt / 6 )
+    avg_bill_cl = float(avg_bill_cl / limit_bal)
+    print(avg_bill_cl)
+    avg_pay_cl = float(total_pay_amt / 6 / limit_bal)
+    num_delays = (
+                    (1 if pay_0 > 0 else 0) + \
+                    (1 if pay_2 > 0 else 0) + \
+                    (1 if pay_3 > 0 else 0) + \
+                    (1 if pay_4 > 0 else 0) + \
+                    (1 if pay_5 > 0 else 0) + \
+                    (1 if pay_6 > 0 else 0) \
+                )
+
+    bill_change_sep = float(bill_amt_1 - bill_amt_2 / limit_bal)
+    bill_change_ago = float(bill_amt_2 - bill_amt_3 / limit_bal)
+    bill_change_jul = float(bill_amt_3 - bill_amt_4 / limit_bal)
+    bill_change_jun = float(bill_amt_4 - bill_amt_5 / limit_bal)
+    bill_change_may = float(bill_amt_5 - bill_amt_6 / limit_bal)
+    
+    pay_change_sep = float(pay_amt_1 - pay_amt_2 / limit_bal)
+    pay_change_ago = float(pay_amt_2 - pay_amt_3 / limit_bal)
+    pay_change_jul = float(pay_amt_3 - pay_amt_4 / limit_bal)
+    pay_change_jun = float(pay_amt_4 - pay_amt_5 / limit_bal)
+    pay_change_may = float(pay_amt_5 - pay_amt_6 / limit_bal)
+    
+    if num_delays >= 1:
+        cur_delay = 1
     else:
-        limit_bal_80000 = 0
+        cur_delay = 0
+
+    if limit_bal >= 9999.99 and limit_bal < 80000.0:
         limit_bal_9999 = 1
-    st.write(" ")
-    
-    
-    #original_title = "<p style='color:Blue; font-size: 15px; font-weight:bold'>Llene los siguientes datos con el valor en dolares:</p>"
-    #st.write(" ")
-    #st.markdown(original_title, unsafe_allow_html=True)
-    #pay_amt_may = st.number_input("Ingrese el monto de la factura en mayo de 2005: ")
-    #pay_amt_jun = st.number_input("Ingrese el monto de la factura en junio de 2005: ")
-    
-    
+        limit_bal_80000 = 0
+    elif limit_bal >= 80000.0 and limit_bal < 200000.0:
+        limit_bal_9999 = 0
+        limit_bal_80000 = 1
+    elif limit_bal >= 200000.0 and limit_bal < 10000000.0:
+        limit_bal_9999 = 0
+        limit_bal_80000 = 0
+
+    #Se crea el diccionario con toda la informacion del cliente 
     datos_cliente = {
         'percentage_paid': percentage_paid, 
         'avg_bill_cl': avg_bill_cl, 
@@ -199,8 +244,10 @@ def form_user_data():
         'age_(60-70)': age_60_70, 
         'age_(70-death)': age_70_death,
        'limit_bal_(80000.0-200000.0)': limit_bal_80000, 
-        'limit_bal_(9999.999-80000.0)': limit_bal_9999}
+        'limit_bal_(9999.999-80000.0)': limit_bal_9999
+        }
     
+    # se devuelve el diccionario con la data del cliente
     return datos_cliente
 
 
@@ -222,8 +269,8 @@ resultado = devuelve_prediccion(modelo_cc,
                     datos_cliente)
 
 print("RESULTADO:" ,resultado)
-#resultado = random.choice([0, 1])
 
+#Se evalua el resultado para presentarlo de forma legible al user
 if(resultado==0):
     pred = 'NO tendra incumplimiento de pago al mes siguiente'
 else:
@@ -231,7 +278,7 @@ else:
 
 # Desplegar el resultado del a prediccion
 st.write(" ")
-original_title = "<p style='color:Purple; font-size: 15px; font-weight:bold'>Segun los datos ingresados...</p>"
+original_title = "<p style='color:purple; font-size: 15px; font-weight:bold'>Segun los datos ingresados...</p>"
 st.write(" ")
 st.markdown(original_title, unsafe_allow_html=True)
 st.text(f"El cliente {pred}")
