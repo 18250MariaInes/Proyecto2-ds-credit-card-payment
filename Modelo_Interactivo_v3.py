@@ -32,11 +32,11 @@ def devuelve_prediccion(modelo, escalador, muestra_json):
     
     cliente = escalador.transform(cliente)
     
-    clases = np.array([0, 1])
+    print(datos_cliente)
     
     clase_ind = modelo.predict(cliente)
     print(modelo.predict(cliente))
-    return [clase_ind][0]
+    return clase_ind[0]
 
 
 def form_user_data():	
@@ -176,7 +176,7 @@ def form_user_data():
     percentage_paid = float(total_pay_amt / total_bill_amt)
     avg_bill_cl = float(total_bill_amt / 6 )
     avg_bill_cl = float(avg_bill_cl / limit_bal)
-    print(avg_bill_cl)
+    # print(avg_bill_cl)
     avg_pay_cl = float(total_pay_amt / 6 / limit_bal)
     num_delays = (
                     (1 if pay_0 > 0 else 0) + \
@@ -187,17 +187,17 @@ def form_user_data():
                     (1 if pay_6 > 0 else 0) \
                 )
 
-    bill_change_sep = float(bill_amt_1 - bill_amt_2 / limit_bal)
-    bill_change_ago = float(bill_amt_2 - bill_amt_3 / limit_bal)
-    bill_change_jul = float(bill_amt_3 - bill_amt_4 / limit_bal)
-    bill_change_jun = float(bill_amt_4 - bill_amt_5 / limit_bal)
-    bill_change_may = float(bill_amt_5 - bill_amt_6 / limit_bal)
+    bill_change_sep = float((bill_amt_1 - bill_amt_2) / limit_bal)
+    bill_change_ago = float((bill_amt_2 - bill_amt_3) / limit_bal)
+    bill_change_jul = float((bill_amt_3 - bill_amt_4) / limit_bal)
+    bill_change_jun = float((bill_amt_4 - bill_amt_5) / limit_bal)
+    bill_change_may = float((bill_amt_5 - bill_amt_6) / limit_bal)
     
-    pay_change_sep = float(pay_amt_1 - pay_amt_2 / limit_bal)
-    pay_change_ago = float(pay_amt_2 - pay_amt_3 / limit_bal)
-    pay_change_jul = float(pay_amt_3 - pay_amt_4 / limit_bal)
-    pay_change_jun = float(pay_amt_4 - pay_amt_5 / limit_bal)
-    pay_change_may = float(pay_amt_5 - pay_amt_6 / limit_bal)
+    pay_change_sep = float((pay_amt_1 - pay_amt_2) / limit_bal)
+    pay_change_ago = float((pay_amt_2 - pay_amt_3) / limit_bal)
+    pay_change_jul = float((pay_amt_3 - pay_amt_4) / limit_bal)
+    pay_change_jun = float((pay_amt_4 - pay_amt_5) / limit_bal)
+    pay_change_may = float((pay_amt_5 - pay_amt_6) / limit_bal)
     
     if num_delays >= 1:
         cur_delay = 1
@@ -210,7 +210,7 @@ def form_user_data():
     elif limit_bal >= 80000.0 and limit_bal < 200000.0:
         limit_bal_9999 = 0
         limit_bal_80000 = 1
-    elif limit_bal >= 200000.0 and limit_bal < 10000000.0:
+    else:
         limit_bal_9999 = 0
         limit_bal_80000 = 0
 
